@@ -2,41 +2,105 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-            A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-            </p>
-            <p>
-                <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
-            </p>
-            <p>
-                <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-            </p>
-        </div>
-    </div>
+
+    <p>
+        &nbsp;</p>
+    <p>
+    Please Select A Country<asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="NorthWindDB" 
+        DataTextField="Country" DataValueField="Country" AppendDataBoundItems="True" AutoPostBack="True">
+        <asp:ListItem Value="" Text="Select A Country"></asp:ListItem>
+    </asp:DropDownList>
+    <asp:SqlDataSource ID="NorthWindDB" runat="server" ConnectionString="<%$ ConnectionStrings:NorthWindConnectionString %>" SelectCommand="SELECT DISTINCT [Country] FROM [Customers]"></asp:SqlDataSource>
+</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="CustomerID" DataSourceID="SelectCountry" AllowSorting="True" Height="240px" Width="1155px">
+            <Columns>
+                <asp:CommandField ShowSelectButton="True" />
+                <asp:BoundField DataField="CustomerID" HeaderText="CustomerID" ReadOnly="True" SortExpression="CustomerID" />
+                <asp:BoundField DataField="CompanyName" HeaderText="CompanyName" SortExpression="CompanyName" />
+                <asp:BoundField DataField="ContactName" HeaderText="ContactName" SortExpression="ContactName" />
+                <asp:BoundField DataField="ContactTitle" HeaderText="ContactTitle" SortExpression="ContactTitle" />
+                <asp:BoundField DataField="Address" HeaderText="Address" SortExpression="Address" />
+                <asp:BoundField DataField="City" HeaderText="City" SortExpression="City" />
+                <asp:BoundField DataField="Region" HeaderText="Region" SortExpression="Region" />
+                <asp:BoundField DataField="PostalCode" HeaderText="PostalCode" SortExpression="PostalCode" />
+                <asp:BoundField DataField="Country" HeaderText="Country" SortExpression="Country" />
+                <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone" />
+                <asp:BoundField DataField="Fax" HeaderText="Fax" SortExpression="Fax" />
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SelectCountry" runat="server" ConnectionString="<%$ ConnectionStrings:NorthWindConnectionString %>" SelectCommand="SELECT * FROM [Customers] WHERE ([Country] = @Country)">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="DropDownList1" Name="Country" PropertyName="SelectedValue" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+</p>
+    <p>
+        &nbsp;</p>
+    <p>
+        <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataSourceID="SelectedItem" Height="50px" Width="125px">
+            <AlternatingRowStyle Wrap="False" />
+            <CommandRowStyle Wrap="False" />
+            <EditRowStyle Wrap="False" />
+            <EmptyDataRowStyle Wrap="False" />
+            <FieldHeaderStyle Wrap="False" />
+            <Fields>
+                <asp:BoundField DataField="ContactTitle" HeaderText="ContactTitle" SortExpression="ContactTitle" />
+                <asp:BoundField DataField="Address" HeaderText="Address" SortExpression="Address" />
+                <asp:BoundField DataField="City" HeaderText="City" SortExpression="City" />
+                <asp:BoundField DataField="Region" HeaderText="Region" SortExpression="Region" />
+                <asp:BoundField DataField="PostalCode" HeaderText="PostalCode" SortExpression="PostalCode" />
+                <asp:BoundField DataField="Country" HeaderText="Country" SortExpression="Country" />
+                <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone" />
+                <asp:BoundField DataField="Fax" HeaderText="Fax" SortExpression="Fax" />
+                <asp:CheckBoxField DataField="Bool" HeaderText="Bool" SortExpression="Bool" />
+                <asp:CommandField ShowDeleteButton="True" ShowEditButton="True" ShowInsertButton="True" />
+            </Fields>
+            <HeaderStyle Wrap="False" />
+            <PagerStyle Wrap="False" />
+            <RowStyle Wrap="False" />
+        </asp:DetailsView>
+        <asp:SqlDataSource ID="SelectedItem" runat="server" ConnectionString="<%$ ConnectionStrings:NorthWindConnectionString %>" DeleteCommand="DELETE FROM [Customers] WHERE [CustomerID] = @CustomerID" InsertCommand="INSERT INTO [Customers] ([CustomerID], [CompanyName], [ContactName], [ContactTitle], [Address], [City], [Region], [PostalCode], [Country], [Phone], [Fax], [Bool]) VALUES (@CustomerID, @CompanyName, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax, @Bool)" SelectCommand="SELECT * FROM [Customers] WHERE ([CustomerID] = @CustomerID)" UpdateCommand="UPDATE [Customers] SET [CompanyName] = @CompanyName, [ContactName] = @ContactName, [ContactTitle] = @ContactTitle, [Address] = @Address, [City] = @City, [Region] = @Region, [PostalCode] = @PostalCode, [Country] = @Country, [Phone] = @Phone, [Fax] = @Fax, [Bool] = @Bool WHERE [CustomerID] = @CustomerID">
+            <DeleteParameters>
+                <asp:Parameter Name="CustomerID" Type="String" />
+            </DeleteParameters>
+            <InsertParameters>
+                <asp:Parameter Name="CustomerID" Type="String" />
+                <asp:Parameter Name="CompanyName" Type="String" />
+                <asp:Parameter Name="ContactName" Type="String" />
+                <asp:Parameter Name="ContactTitle" Type="String" />
+                <asp:Parameter Name="Address" Type="String" />
+                <asp:Parameter Name="City" Type="String" />
+                <asp:Parameter Name="Region" Type="String" />
+                <asp:Parameter Name="PostalCode" Type="String" />
+                <asp:Parameter Name="Country" Type="String" />
+                <asp:Parameter Name="Phone" Type="String" />
+                <asp:Parameter Name="Fax" Type="String" />
+                <asp:Parameter Name="Bool" Type="Boolean" />
+            </InsertParameters>
+            <SelectParameters>
+                <asp:ControlParameter ControlID="GridView1" Name="CustomerID" PropertyName="SelectedValue" Type="String" />
+            </SelectParameters>
+            <UpdateParameters>
+                <asp:Parameter Name="CompanyName" Type="String" />
+                <asp:Parameter Name="ContactName" Type="String" />
+                <asp:Parameter Name="ContactTitle" Type="String" />
+                <asp:Parameter Name="Address" Type="String" />
+                <asp:Parameter Name="City" Type="String" />
+                <asp:Parameter Name="Region" Type="String" />
+                <asp:Parameter Name="PostalCode" Type="String" />
+                <asp:Parameter Name="Country" Type="String" />
+                <asp:Parameter Name="Phone" Type="String" />
+                <asp:Parameter Name="Fax" Type="String" />
+                <asp:Parameter Name="Bool" Type="Boolean" />
+                <asp:Parameter Name="CustomerID" Type="String" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+</p>
+
+
 
 </asp:Content>
